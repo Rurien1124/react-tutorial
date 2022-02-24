@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { Component } from 'react';
+import Menu from './components/Menu';
+import Content from './components/Content';
+import Subject from './components/Subject';
+import HelloSpring from './components/HelloSpring';
 import './App.css';
 
-function App() {
-	// 요청받은 정보를 담아줄 변수 선언
-	const [ testStr, setTestStr ] = useState('');
-	
-	// 변수 초기화
-	function callback(str) {
-		setTestStr(str);
+class App extends Component {
+	constructor(props) {
+		super(props);
+		
+		this.state = {
+			subject: {
+				title: "WEB", sub: "world wide web!",
+			},
+			menuContents: [
+				{id: 1, title: "HTML", desc: "HTML information"},
+				{id: 2, title: "CSS", desc: "CSS information"},
+				{id: 3, title: "JavaScript", desc: "Javascript information"},
+			]
+		}
 	}
 	
-	// 첫 번째 렌더링을 마친 후 실행
-	useEffect(
-		() => {
-			axios({
-				url: '/api/hello',
-				method: 'GET'
-			}).then((res) => {
-				callback(res.data);
-			})
-		}, []
-	);
-	
-	return (
-		<div className="App">
-			<header className="App-header">
-				{testStr}
-			</header>
-		</div>
-	);
+	render() {
+		return (
+			<div className="App">
+				<HelloSpring></HelloSpring>
+				<Subject title={this.state.subject.title} sub={this.state.subject.sub}></Subject>
+				<Menu menuContents={this.state.menuContents}></Menu>
+				<Content title="HTML" desc="HTML is HyperTextMarkupLanguage."></Content>
+			</div>
+		)
+	}
 }
-
 
 export default App;
