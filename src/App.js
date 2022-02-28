@@ -21,13 +21,6 @@ const content = {
 	}
 }
 
-// Content texts when mode is "read"
-const menuContents = [
-	{id: 1, title: "HTML", desc: "HTML information"},
-	{id: 2, title: "CSS", desc: "CSS information"},
-	{id: 3, title: "JavaScript", desc: "Javascript information"},
-];
-
 const modes = {
 	welcome: "welcome",
 	read: "read",
@@ -40,6 +33,19 @@ const App = () => {
 	// State variables
 	const [mode, setMode] = useState("welcome");
 	const [selectedMenuContentId, setSelectedMenuContentId] = useState(1);
+
+	// Content texts when mode is "read"
+	const [menuContents, setMenuContents] = useState([
+		{id: 1, title: "HTML", desc: "HTML information"},
+		{id: 2, title: "CSS", desc: "CSS information"},
+		{id: 3, title: "JavaScript", desc: "Javascript information"},
+	]);
+	
+	const pushMenuContents = (contentTitle, contentDesc) => {
+		let maxMenuContentId = Math.max.apply(Math, menuContents.map((menuContent) => { return menuContent.id })) + 1;
+		let newMenuContent = {id: maxMenuContentId, title: contentTitle, desc: contentDesc};
+		setMenuContents(menuContents.concat(newMenuContent));
+	}
 	
 	let contentType, contentTitle, contentDesc = null;
 	
@@ -62,7 +68,13 @@ const App = () => {
 			
 			break;
 		case modes.create:
-			contentType = <CreateContent title={contentTitle} desc={contentDesc}></CreateContent>
+			contentType = <CreateContent
+				title={contentTitle}
+				desc={contentDesc}
+				onSubmit={(contentTitle, contentDesc) => {
+					pushMenuContents(contentTitle, contentDesc);
+				}}
+			></CreateContent>
 			
 			break;
 		case modes.update:

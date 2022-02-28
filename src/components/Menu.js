@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 
-const Menu = (props) => {
+const Menu = React.memo(({ menuContents, onChangePage }) => {
 	let menuLists = new Array();
-	let menuContents = props.menuContents;
 	
 	menuContents.forEach(menuContent => {
 		menuLists.push(
@@ -13,7 +12,7 @@ const Menu = (props) => {
 					onClick={
 						function(e) {
 							e.preventDefault();
-							props.onChangePage(e.target.dataset.id);
+							onChangePage(e.target.dataset.id);
 						}
 					}
 				>
@@ -28,7 +27,9 @@ const Menu = (props) => {
 				{menuLists}
 			</ul>
 		</nav>
-	)
-}
+	);
+}, (prevProps, nextProps) => {
+	return prevProps.menuContents === nextProps.menuContents;
+});
 
 export default Menu;

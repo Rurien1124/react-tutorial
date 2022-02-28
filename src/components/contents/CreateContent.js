@@ -13,8 +13,7 @@ const CreateContent = (props) => {
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
-					console.log(e.target.title.value);
-					console.log(e.target.desc.value);
+					props.onSubmit(e.target.title.value, e.target.desc.value);
 			}}>
 				<p>
 					<input type="text" name="title" placeholder="title" style={inputStyle}></input>
