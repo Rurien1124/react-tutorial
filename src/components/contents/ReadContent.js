@@ -1,10 +1,10 @@
 import React from 'react';
 
-const ReadContent = (props) => {
+const ReadContent = ({ title, desc }) => {
 	return (
 		<article>
-			<h1>{props.title}</h1>
-			{props.desc}
+			<h1>{title}</h1>
+			{desc}
 		</article>
 	)
 }

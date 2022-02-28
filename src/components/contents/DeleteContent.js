@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteContent = (props) => {
+const DeleteContent = () => {
 	return (
 		<article>
 			<h1>Delete</h1>

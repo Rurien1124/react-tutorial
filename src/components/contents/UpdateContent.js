@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UpdateContent = (props) => {
+const UpdateContent = () => {
 	return (
 		<article>
 			<h1>Update</h1>

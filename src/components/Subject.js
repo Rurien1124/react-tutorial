@@ -1,6 +1,6 @@
 import React from "react";
 
-const Subject = (props) => {
+const Subject = ({ title, sub, onChangePage }) => {
 	return (
 		<header>
 			<h1><a
@@ -8,14 +8,14 @@ const Subject = (props) => {
 					onClick={
 						function(e) {
 							e.preventDefault();
-							props.onChangePage();
+							onChangePage();
 						}
 					}
 				>
-					{props.title}
+					{title}
 				</a>
 			</h1>
-			{props.sub}
+			{sub}
 		</header>
 	)
 }

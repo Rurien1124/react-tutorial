@@ -6,14 +6,14 @@ const inputStyle = {
 	margin: "0 0 0 0",
 }
 
-const CreateContent = (props) => {
+const CreateContent = ({ onSubmit }) => {
 	return (
 		<article>
 			<h1>Create</h1>
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
-					props.onSubmit(e.target.title.value, e.target.desc.value);
+					onSubmit(e.target.title.value, e.target.desc.value);
 			}}>
 				<p>
 					<input type="text" name="title" placeholder="title" style={inputStyle}></input>
