@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const inputStyle = {
 	width: "20%",
@@ -10,7 +10,12 @@ const CreateContent = (props) => {
 	return (
 		<article>
 			<h1>Create</h1>
-			<form action="/create-content" method="POST">
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					console.log(e.target.title.value);
+					console.log(e.target.desc.value);
+			}}>
 				<p>
 					<input type="text" name="title" placeholder="title" style={inputStyle}></input>
 				</p>
@@ -18,11 +23,7 @@ const CreateContent = (props) => {
 					<textarea name="desc" placeholder="desc" style={inputStyle}></textarea>
 				</p>
 				<p>
-					<input type="button" name="create" style={inputStyle} value="create"
-						onClick={(e) => {
-							e.preventDefault();
-							
-						}}></input>
+					<input type="submit" name="create" style={inputStyle} value="create"></input>
 				</p>
 			</form>
 		</article>

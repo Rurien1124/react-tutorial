@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import HelloSpring from './components/HelloSpring';
-import Menu from './components/Menu';
-import Control from './components/Control';
-import ReadContent from './components/contents/ReadContent';
-import CreateContent from './components/contents/CreateContent';
-import UpdateContent from './components/contents/UpdateContent';
-import DeleteContent from './components/contents/DeleteContent';
-import Subject from './components/Subject';
-import './App.css';
+import React, { useState } from "react";
+import HelloSpring from "./components/HelloSpring";
+import Menu from "./components/Menu";
+import Control from "./components/Control";
+import ReadContent from "./components/contents/ReadContent";
+import CreateContent from "./components/contents/CreateContent";
+import UpdateContent from "./components/contents/UpdateContent";
+import DeleteContent from "./components/contents/DeleteContent";
+import Subject from "./components/Subject";
+import "./App.css";
 
 // Content texts
 const content = {
@@ -21,7 +21,7 @@ const content = {
 	}
 }
 
-// Content texts when mode is 'read'
+// Content texts when mode is "read"
 const menuContents = [
 	{id: 1, title: "HTML", desc: "HTML information"},
 	{id: 2, title: "CSS", desc: "CSS information"},

@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
 export function getAxios(url, callback) {
 	axios(
 		{
 			url: url,
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Access-Control-Allow-Origin': "*"
+				"Access-Control-Allow-Origin": "*"
 			},
 			withCredentials: false,
 		}
@@ -15,13 +15,15 @@ export function getAxios(url, callback) {
 	});
 }
 
-export function postAxios(url, callback) {
+export function postAxios(url, data, callback) {
 	axios(
 		{
 			url: url,
-			method: 'POST',
+			method: "POST",
+			data: data,
 			headers: {
-				'Access-Control-Allow-Origin': "*"
+				"Access-Control-Allow-Origin": "*",
+				"Content-Type": "application/json",
 			},
 			withCredentials: false,
 		}
