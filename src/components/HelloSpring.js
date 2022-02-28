@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { getAxios } from '../common/CustomAxios';
 
-function HelloSpring() {
+const HelloSpring = () => {
 	// 요청받은 정보를 담아줄 변수 선언
 	const [ testStr, setTestStr ] = useState('');
 	
@@ -11,16 +11,9 @@ function HelloSpring() {
 	}
 	
 	// 첫 번째 렌더링을 마친 후 실행
-	useEffect(
-		() => {
-			axios({
-				url: '/api/hello',
-				method: 'GET'
-			}).then((res) => {
-				callback(res.data);
-			})
-		}, []
-	);
+	useEffect(() => {
+		getAxios('/api/hello', callback)
+	});
 	
 	return (
 		<div className="App">

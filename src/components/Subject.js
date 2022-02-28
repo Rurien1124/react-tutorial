@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Subject extends Component {
-	render() {
-		return (
-			<header>
-				<h1><a
-						href="/"
-						onClick={
-							function(e) {
-								e.preventDefault();
-								this.props.onChangePage();
-							}.bind(this)
+const Subject = (props) => {
+	return (
+		<header>
+			<h1><a
+					href="/"
+					onClick={
+						function(e) {
+							e.preventDefault();
+							props.onChangePage();
 						}
-					>
-						{this.props.title}
-					</a>
-				</h1>
-				{this.props.sub}
-			</header>
-		)
-	}
+					}
+				>
+					{props.title}
+				</a>
+			</h1>
+			{props.sub}
+		</header>
+	)
 }
 
 export default Subject;
