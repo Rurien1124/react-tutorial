@@ -1,6 +1,8 @@
 import React from "react";
 
 const Subject = ({ title, sub, onChangePage }) => {
+	console.log("Rendering Subject");
+	
 	return (
 		<header>
 			<h1><a

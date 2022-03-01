@@ -1,6 +1,8 @@
 import React from "react";
 
 const Control = ({ modes, onChangeMode }) => {
+	console.log("Rendering Control");
+	
 	return (
 		<ul>
 			<li><a href="/create" onClick={(e) => {

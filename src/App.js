@@ -30,6 +30,8 @@ const modes = {
 }
 
 const App = () => {
+	console.log("Rendering App");
+	
 	// State variables
 	const [mode, setMode] = useState("welcome");
 	const [selectedMenuContentId, setSelectedMenuContentId] = useState(1);

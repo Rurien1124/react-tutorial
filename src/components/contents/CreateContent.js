@@ -7,6 +7,8 @@ const inputStyle = {
 }
 
 const CreateContent = ({ onSubmit }) => {
+	console.log("Rendering CreateContent");
+	
 	return (
 		<article>
 			<h1>Create</h1>
