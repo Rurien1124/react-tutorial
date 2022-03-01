@@ -1,10 +1,5 @@
 import React from "react";
-
-const inputStyle = {
-	width: "20%",
-	padding: "0 0 0 0",
-	margin: "0 0 0 0",
-}
+import { INPUT_STYLE } from "../../common/Constants";
 
 const CreateContent = ({ onSubmit }) => {
 	console.log("Rendering CreateContent");
@@ -13,18 +8,26 @@ const CreateContent = ({ onSubmit }) => {
 		<article>
 			<h1>Create</h1>
 			<form
+				action="create_process"
+				method="post"
 				onSubmit={(e) => {
-					e.preventDefault();
-					onSubmit(e.target.title.value, e.target.desc.value);
-			}}>
+						e.preventDefault();
+						let contentData = {
+							title: e.target.title.value,
+							desc: e.target.desc.value,
+						}
+						onSubmit(contentData);
+					}
+				}
+			>
 				<p>
-					<input type="text" name="title" placeholder="title" style={inputStyle}></input>
+					<input type="text" name="title" placeholder="title" style={INPUT_STYLE}></input>
 				</p>
 				<p>
-					<textarea name="desc" placeholder="desc" style={inputStyle}></textarea>
+					<textarea name="desc" placeholder="desc" style={INPUT_STYLE}></textarea>
 				</p>
 				<p>
-					<input type="submit" name="create" style={inputStyle} value="create"></input>
+					<input type="submit" name="create" style={INPUT_STYLE} value="create"></input>
 				</p>
 			</form>
 		</article>

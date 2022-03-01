@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CONTENTS, CONTENT_MODES } from "./common/Constants";
 import HelloSpring from "./components/HelloSpring";
 import Menu from "./components/Menu";
 import Control from "./components/Control";
@@ -9,82 +10,71 @@ import DeleteContent from "./components/contents/DeleteContent";
 import Subject from "./components/Subject";
 import "./App.css";
 
-// Content texts
-const content = {
-	welcome: {
-		title: "Welcome",
-		desc: "Welcome React!",
-	},
-	subject: {
-		title: "WEB",
-		sub: "world wide web!",
-	}
+// Create content
+const createContent = (contents, content, setContents) => {
+	let maxContentId = Math.max.apply(Math, contents.map((content) => { return content.id })) + 1;
+	let newContent = {id: maxContentId, title: content.title, desc: content.desc};
+	setContents(contents.concat(newContent));
 }
 
-const modes = {
-	welcome: "welcome",
-	read: "read",
-	create: "create",
-	delete: "delete",
-	update: "update",
-}
-
-const App = () => {
-	console.log("Rendering App");
+// Update content
+const updateContent = (contents, content, setContents, setMode) => {
+	let updateContents = Array.from(contents);
+	let updateContentIndex = updateContents.findIndex(updateContent => updateContent.id === content.id);
 	
-	// State variables
-	const [mode, setMode] = useState("welcome");
-	const [selectedMenuContentId, setSelectedMenuContentId] = useState(1);
-
-	// Content texts when mode is "read"
-	const [menuContents, setMenuContents] = useState([
-		{id: 1, title: "HTML", desc: "HTML information"},
-		{id: 2, title: "CSS", desc: "CSS information"},
-		{id: 3, title: "JavaScript", desc: "Javascript information"},
-	]);
-	
-	const pushMenuContents = (contentTitle, contentDesc) => {
-		let maxMenuContentId = Math.max.apply(Math, menuContents.map((menuContent) => { return menuContent.id })) + 1;
-		let newMenuContent = {id: maxMenuContentId, title: contentTitle, desc: contentDesc};
-		setMenuContents(menuContents.concat(newMenuContent));
+	if(updateContentIndex > -1) {
+		updateContents[updateContentIndex] = content;
 	}
 	
+	setContents(updateContents);
+	setMode(CONTENT_MODES.READ);
+}
+
+// Get selected content
+const getSelectedContent = (contents, selectedContentId) => {
+	return contents.find(
+		content => content.id === selectedContentId
+	);
+}
+
+// Get contentType
+const getContentType = (mode, contents, setContents, setMode, selectedContentId) => {
+	let content = getSelectedContent(contents, selectedContentId);
 	let contentType, contentTitle, contentDesc = null;
 	
 	// Set content texts
 	switch(mode) {
-		case modes.welcome:
-			contentTitle = content.welcome.title;
-			contentDesc = content.welcome.desc;
-			contentType = <ReadContent title={contentTitle} desc={contentDesc}></ReadContent>
+		case CONTENT_MODES.WELCOME:
+			contentType = <ReadContent title={CONTENTS.WELCOME.TITLE} desc={CONTENTS.WELCOME.DESC}></ReadContent>
 			
 			break;
-		case modes.read:
-			let selectedMenuContent = menuContents.find(
-				menuContent => menuContent.id === selectedMenuContentId
-			);
-			
-			contentTitle = selectedMenuContent.title;
-			contentDesc = selectedMenuContent.desc;
-			contentType = <ReadContent title={contentTitle} desc={contentDesc}></ReadContent>
+		case CONTENT_MODES.READ:
+			contentType = <ReadContent title={content.title} desc={content.desc}></ReadContent>
 			
 			break;
-		case modes.create:
-			contentType = <CreateContent
-				title={contentTitle}
-				desc={contentDesc}
-				onSubmit={(contentTitle, contentDesc) => {
-					pushMenuContents(contentTitle, contentDesc);
-				}}
-			></CreateContent>
+		case CONTENT_MODES.CREATE:
+			contentType =
+				<CreateContent
+					title={contentTitle}
+					desc={contentDesc}
+					onSubmit={(content) => {
+						createContent(contents, content, setContents);
+					}}
+				></CreateContent>
 			
 			break;
-		case modes.update:
-			contentType = <UpdateContent title={contentTitle} desc={contentDesc}></UpdateContent>
+		case CONTENT_MODES.UPDATE:
+			contentType =
+				<UpdateContent
+					content={content}
+					onSubmit={(content) => {
+						updateContent(contents, content, setContents, setMode);
+					}}
+				></UpdateContent>
 			
 			break;
-		case modes.delete:
-			contentType = <DeleteContent title={contentTitle} desc={contentDesc}></DeleteContent>
+		case CONTENT_MODES.DELETE:
+			contentType = <DeleteContent></DeleteContent>
 			
 			break;
 		default:
@@ -92,28 +82,44 @@ const App = () => {
 			break;
 	}
 	
+	return contentType;
+}
+
+const App = () => {
+	console.log("Rendering App");
+	
+	// State variables
+	const [mode, setMode] = useState("welcome");
+	const [selectedContentId, setSelectedContentId] = useState(1);
+	
+	// Content texts when mode is "read"
+	const [contents, setContents] = useState([
+		{id: 1, title: "HTML", desc: "HTML information"},
+		{id: 2, title: "CSS", desc: "CSS information"},
+		{id: 3, title: "JavaScript", desc: "Javascript information"},
+	]);
+	
+	let contentType = getContentType(mode, contents, setContents, setMode, selectedContentId);
+	
 	return (
 		<div className="App">
 			<Subject
-				title={content.subject.title}
-				sub={content.subject.sub}
+				title={CONTENTS.SUBJECT.TITLE}
+				sub={CONTENTS.SUBJECT.SUB}
 				onChangePage={ () => {
-						setMode(modes.welcome)
+						setMode(CONTENT_MODES.WELCOME)
 					}
 				}
-			>
-			</Subject>
+			></Subject>
 			<Menu
-				menuContents={menuContents}
+				contents={contents}
 				onChangePage={ (id) => {
-						setMode(modes.read);
-						setSelectedMenuContentId(Number(id));
+						setMode(CONTENT_MODES.READ);
+						setSelectedContentId(Number(id));
 					}
 				}
-			>
-			</Menu>
+			></Menu>
 			<Control
-				modes={modes}
 				onChangeMode={
 					(changeMode) => {
 						setMode(changeMode);

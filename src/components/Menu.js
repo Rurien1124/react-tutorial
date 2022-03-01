@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 
-const Menu = React.memo(({ menuContents, onChangePage }) => {
+const Menu = ({ contents, onChangePage }) => {
 	console.log("Rendering Menu");
 	
-	// Return previous menuLists if 'menuContents' state was not changed
-	let menuLists = useMemo(() => getMenuLists(menuContents, onChangePage), [menuContents]);
+	// Return previous menuLists if 'contents' state was not changed
+	let menuLists = useMemo(() => getMenuLists(contents, onChangePage), [contents]);
 	
 	return (
 		<nav>
@@ -13,25 +13,24 @@ const Menu = React.memo(({ menuContents, onChangePage }) => {
 			</ul>
 		</nav>
 	);
-});
+};
 
-const getMenuLists = (menuContents, onChangePage) => {
+const getMenuLists = (contents, onChangePage) => {
 	let menuLists = new Array();
 	
-	menuContents.forEach(menuContent => {
+	contents.forEach(content => {
 		menuLists.push(
-			<li key={menuContent.id}>
+			<li key={content.id}>
 				<a
-					href={"/content/" + menuContent.id}
-					data-id={menuContent.id}
-					onClick={
-						function(e) {
+					href={"/content/" + content.id}
+					data-id={content.id}
+					onClick={(e) => {
 							e.preventDefault();
 							onChangePage(e.target.dataset.id);
 						}
 					}
 				>
-					{menuContent.title}
+					{content.title}
 				</a>
 			</li>);
 	});
