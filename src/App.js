@@ -6,28 +6,32 @@ import Control from "./components/Control";
 import ReadContent from "./components/contents/ReadContent";
 import CreateContent from "./components/contents/CreateContent";
 import UpdateContent from "./components/contents/UpdateContent";
-import DeleteContent from "./components/contents/DeleteContent";
 import Subject from "./components/Subject";
 import "./App.css";
 
+const setters = new Object();
+
 // Create content
-const createContent = (contents, content, setContents) => {
+const createContent = (contents, content) => {
 	let maxContentId = Math.max.apply(Math, contents.map((content) => { return content.id })) + 1;
 	let newContent = {id: maxContentId, title: content.title, desc: content.desc};
-	setContents(contents.concat(newContent));
+	
+	setters.setContents(contents.concat(newContent));
+	setters.setMode(CONTENT_MODES.READ);
+	setters.setSelectedContentId(maxContentId);
 }
 
 // Update content
-const updateContent = (contents, content, setContents, setMode) => {
+const updateContent = (contents, content) => {
 	let updateContents = Array.from(contents);
-	let updateContentIndex = updateContents.findIndex(updateContent => updateContent.id === content.id);
+	let updateContentIndex = getSelectedContentIndex(updateContents, content.id);
 	
 	if(updateContentIndex > -1) {
 		updateContents[updateContentIndex] = content;
 	}
 	
-	setContents(updateContents);
-	setMode(CONTENT_MODES.READ);
+	setters.setContents(updateContents);
+	setters.setMode(CONTENT_MODES.READ);
 }
 
 // Get selected content
@@ -37,8 +41,13 @@ const getSelectedContent = (contents, selectedContentId) => {
 	);
 }
 
+// Get selected content's index'
+const getSelectedContentIndex = (contents, selectedContentId) => {
+	return contents.findIndex(content => content.id === selectedContentId);
+}
+
 // Get contentType
-const getContentType = (mode, contents, setContents, setMode, selectedContentId) => {
+const getContentType = (mode, contents, selectedContentId) => {
 	let content = getSelectedContent(contents, selectedContentId);
 	let contentType, contentTitle, contentDesc = null;
 	
@@ -58,7 +67,7 @@ const getContentType = (mode, contents, setContents, setMode, selectedContentId)
 					title={contentTitle}
 					desc={contentDesc}
 					onSubmit={(content) => {
-						createContent(contents, content, setContents);
+						createContent(contents, content, setters.setContents);
 					}}
 				></CreateContent>
 			
@@ -68,13 +77,12 @@ const getContentType = (mode, contents, setContents, setMode, selectedContentId)
 				<UpdateContent
 					content={content}
 					onSubmit={(content) => {
-						updateContent(contents, content, setContents, setMode);
+						updateContent(contents, content, setters.setContents, setters.setMode);
 					}}
 				></UpdateContent>
 			
 			break;
 		case CONTENT_MODES.DELETE:
-			contentType = <DeleteContent></DeleteContent>
 			
 			break;
 		default:
@@ -90,7 +98,7 @@ const App = () => {
 	
 	// State variables
 	const [mode, setMode] = useState("welcome");
-	const [selectedContentId, setSelectedContentId] = useState(1);
+	const [selectedContentId, setSelectedContentId] = useState(-1);
 	
 	// Content texts when mode is "read"
 	const [contents, setContents] = useState([
@@ -99,7 +107,12 @@ const App = () => {
 		{id: 3, title: "JavaScript", desc: "Javascript information"},
 	]);
 	
-	let contentType = getContentType(mode, contents, setContents, setMode, selectedContentId);
+	// Add setters
+	setters.setMode = setMode;
+	setters.setSelectedContentId = setSelectedContentId;
+	setters.setContents = setContents;
+	
+	let contentType = getContentType(mode, contents, selectedContentId);
 	
 	return (
 		<div className="App">
@@ -107,7 +120,8 @@ const App = () => {
 				title={CONTENTS.SUBJECT.TITLE}
 				sub={CONTENTS.SUBJECT.SUB}
 				onChangePage={ () => {
-						setMode(CONTENT_MODES.WELCOME)
+						setMode(CONTENT_MODES.WELCOME);
+						setSelectedContentId(-1);
 					}
 				}
 			></Subject>
@@ -122,7 +136,22 @@ const App = () => {
 			<Control
 				onChangeMode={
 					(changeMode) => {
-						setMode(changeMode);
+						if(changeMode === CONTENT_MODES.DELETE) {
+							let deleteContents = Array.from(contents);
+							let deleteContentIndex = getSelectedContentIndex(contents, selectedContentId);
+							
+							if(selectedContentId < 0){
+								alert("선택된 항목이 없습니다.");
+							} else if(window.confirm(`[${deleteContents[deleteContentIndex].title}](을)를 삭제 하시겠습니까?`)) {
+								deleteContents.splice(deleteContentIndex, 1);
+								
+								setContents(deleteContents);
+								setMode(CONTENT_MODES.WELCOME);
+								setSelectedContentId(-1);
+							}
+						} else {
+							setMode(changeMode);
+						}
 					}
 				}
 			></Control>
