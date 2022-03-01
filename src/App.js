@@ -93,6 +93,33 @@ const getContentType = (mode, contents, selectedContentId) => {
 	return contentType;
 }
 
+
+// Change Control handler
+const changeControlHandler = (changeMode, contents, selectedContentId) => {
+	if(changeMode === CONTENT_MODES.DELETE) {
+		let deleteContents = Array.from(contents);
+		let deleteContentIndex = getSelectedContentIndex(contents, selectedContentId);
+		
+		if(selectedContentId < 0){
+			alert("선택된 항목이 없습니다.");
+		} else if(window.confirm(`[${deleteContents[deleteContentIndex].title}](을)를 삭제 하시겠습니까?`)) {
+			deleteContents.splice(deleteContentIndex, 1);
+			
+			setters.setContents(deleteContents);
+			setters.setMode(CONTENT_MODES.WELCOME);
+			setters.setSelectedContentId(-1);
+		}
+	} else if(changeMode === CONTENT_MODES.UPDATE){
+		if(selectedContentId < 0) {
+			alert("선택된 항목이 없습니다.");
+		} else {
+			setters.setMode(changeMode);
+		}
+	} else {
+		setters.setMode(changeMode);
+	}
+}
+
 const App = () => {
 	console.log("Rendering App");
 	
@@ -135,24 +162,7 @@ const App = () => {
 			></Menu>
 			<Control
 				onChangeMode={
-					(changeMode) => {
-						if(changeMode === CONTENT_MODES.DELETE) {
-							let deleteContents = Array.from(contents);
-							let deleteContentIndex = getSelectedContentIndex(contents, selectedContentId);
-							
-							if(selectedContentId < 0){
-								alert("선택된 항목이 없습니다.");
-							} else if(window.confirm(`[${deleteContents[deleteContentIndex].title}](을)를 삭제 하시겠습니까?`)) {
-								deleteContents.splice(deleteContentIndex, 1);
-								
-								setContents(deleteContents);
-								setMode(CONTENT_MODES.WELCOME);
-								setSelectedContentId(-1);
-							}
-						} else {
-							setMode(changeMode);
-						}
-					}
+					(changeMode) => changeControlHandler(changeMode, contents, selectedContentId)
 				}
 			></Control>
 			{contentType}

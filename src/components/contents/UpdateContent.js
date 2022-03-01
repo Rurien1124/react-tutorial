@@ -10,7 +10,6 @@ const UpdateContent = ({ content, onSubmit }) => {
 	return (
 		<article>
 			<h1>Update</h1>
-			{JSON.stringify(content)}
 			<form action="/update_process"
 				method="post"
 				onSubmit={(e) => {
