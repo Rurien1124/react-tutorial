@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { INPUT_STYLE } from "../../common/Constants";
 
 const UpdateContent = ({ content, onSubmit }) => {

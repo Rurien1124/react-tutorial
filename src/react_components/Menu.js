@@ -1,22 +1,7 @@
 import React, { useMemo } from "react";
 
-const Menu = ({ contents, onChangePage }) => {
-	console.log("Rendering Menu");
-	
-	// Return previous menuLists if 'contents' state was not changed
-	let menuLists = useMemo(() => getMenuLists(contents, onChangePage), [contents]);
-	
-	return (
-		<nav>
-			<ul>
-				{menuLists}
-			</ul>
-		</nav>
-	);
-};
-
 const getMenuLists = (contents, onChangePage) => {
-	let menuLists = new Array();
+	let menuLists = [];
 	
 	contents.forEach(content => {
 		menuLists.push(
@@ -37,5 +22,27 @@ const getMenuLists = (contents, onChangePage) => {
 	
 	return menuLists;
 }
+
+const Menu = ({ contents, onChangePage }) => {
+	console.log("Rendering Menu");
+	
+	// Return previous menuLists if 'contents' state was not changed
+	let menuLists = useMemo(() => {
+			console.log("State 'contents' was changed");
+			return getMenuLists(contents, onChangePage);
+		},
+		[contents]
+	);
+	
+	console.log(menuLists)
+	
+	return (
+		<nav>
+			<ul>
+				{menuLists}
+			</ul>
+		</nav>
+	);
+};
 
 export default Menu;

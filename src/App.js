@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { CONTENTS, CONTENT_MODES } from "./common/Constants";
-import HelloSpring from "./components/HelloSpring";
-import Menu from "./components/Menu";
-import Control from "./components/Control";
-import ReadContent from "./components/contents/ReadContent";
-import CreateContent from "./components/contents/CreateContent";
-import UpdateContent from "./components/contents/UpdateContent";
-import Subject from "./components/Subject";
+import HelloSpring from "./react_components/HelloSpring";
+import Menu from "./react_components/Menu";
+import Control from "./react_components/Control";
+import ReadContent from "./react_components/contents/ReadContent";
+import CreateContent from "./react_components/contents/CreateContent";
+import UpdateContent from "./react_components/contents/UpdateContent";
+import Subject from "./react_components/Subject";
+import Reduxquare from "./redux_components/Reduxquare";
 import "./App.css";
 
-const setters = new Object();
+const setters = {
+	setMode: null,
+	setContents: null,
+	setSelectedContentId: null,
+};
 
 // Create content
 const createContent = (contents, content) => {
@@ -167,6 +172,7 @@ const App = () => {
 			></Control>
 			{contentType}
 			<HelloSpring></HelloSpring>
+			<Reduxquare></Reduxquare>
 		</div>
 	)
 }
