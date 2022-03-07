@@ -7,7 +7,6 @@ import ReadContent from "./react_components/contents/ReadContent";
 import CreateContent from "./react_components/contents/CreateContent";
 import UpdateContent from "./react_components/contents/UpdateContent";
 import Subject from "./react_components/Subject";
-import Reduxquare from "./redux_components/Reduxquare";
 import "./App.css";
 
 const setters = {
@@ -172,7 +171,6 @@ const App = () => {
 			></Control>
 			{contentType}
 			<HelloSpring></HelloSpring>
-			<Reduxquare></Reduxquare>
 		</div>
 	)
 }
